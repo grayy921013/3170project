@@ -62,7 +62,7 @@ public class Administrator extends User {
         statement.execute(sql);
         sql = "CREATE TABLE authorship (aname CHAR(25), callnum CHAR(8), PRIMARY KEY(aname, callnum))";
         statement.execute(sql);
-        System.out.println("Done! Database is initialized");
+        System.out.println("Done! Database is initialized!");
     }
 
     private void dropAllTables() throws SQLException {
@@ -80,7 +80,7 @@ public class Administrator extends User {
         statement.execute(sql);
         sql = "DROP TABLE authorship";
         statement.execute(sql);
-        System.out.println("Done! Database is removed");
+        System.out.println("Done! Database is removed!");
     }
 
     private void loadData() throws SQLException, FileNotFoundException, ParseException {

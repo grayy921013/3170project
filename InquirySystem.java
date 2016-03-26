@@ -57,6 +57,8 @@ public class InquirySystem {
 
     private User getUserType(int choice, Connection connection) {
         if (choice == 1) return new Administrator(connection);
+        if (choice == 2) return new LibraryUser(connection);
+        if (choice == 3) return new Librarian(connection);
         return null;
     }
 }
