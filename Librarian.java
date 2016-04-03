@@ -1,5 +1,7 @@
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -7,6 +9,7 @@ import java.util.Scanner;
  * Created by Minxuan Xu on 3/26/16.
  */
 public class Librarian extends User {
+    static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     public Librarian(Connection connection) {
         super(connection);
     }
@@ -51,21 +54,23 @@ public class Librarian extends User {
          
         //check whether the copy is available to be borrowed
         Statement stmt = connection.createStatement();
-        String query= "SELECT FROM borrow WHERE callnum='" + callnum + "' AND copynum="
+        String query = "SELECT * FROM borrow WHERE callnum='" + callnum + "' AND copynum="
                 + copynum + " AND return IS NULL";
         ResultSet rs = stmt.executeQuery(query);
-        if (rs.getRow() > 0) {
+        if (rs.next()) {
             System.out.println("The book copy has not been returned yet:(");
         }
         else 
         {
            //borrow the book
-           String today=""; //how to get today?
-           String update="INSERT INTO borrow VALUES ('" + userid + "','" + callnum +
-                   "'," + copynum + ","+ today + ",NULL)";
+           String today = format.format(new Date());
+           String update = "INSERT INTO borrow VALUES ('" + userid + "','" + callnum +
+                   "'," + copynum + ",to_date('" + today + "','dd/mm/yyyy'),NULL)";
            stmt.executeUpdate(update);
            System.out.println("Book borrowing performed successfully!!!"); 
         }
+        rs.close();
+        stmt.close();
      }
     
     private void bookReturn() throws SQLException {
@@ -84,21 +89,23 @@ public class Librarian extends User {
          
         //check whether the specified checkout record exists
         Statement stmt = connection.createStatement();
-        String query= "SELECT FROM borrow WHERE libuid='" + userid + "' AND callnum='" 
+        String query = "SELECT * FROM borrow WHERE libuid='" + userid + "' AND callnum='" 
                 + callnum + "' AND copynum=" + copynum + " AND return IS NULL";
         ResultSet rs = stmt.executeQuery(query);
-        if (rs.getRow() > 0) {
-            System.out.println("The book copy has not been checked out by you:(");
-        }
-        else 
-        {
+        if (rs.next()) {
            //return the book
-           String today=""; //how to get today?
-           String update="UPDATE borrow SET return=" + today + " WHERE libuid='" 
-                + userid + "' AND callnum='" + callnum + "' AND copynum=" + copynum
-                +"  AND return IS NULL";
+           String today = format.format(new Date());
+           String update ="UPDATE borrow SET return=to_date('" + today + "','dd/mm/yyyy') "
+                + "WHERE libuid='" + userid + "' AND callnum='" + callnum + "' AND copynum=" 
+                + copynum +"  AND return IS NULL";
            stmt.executeUpdate(update);
            System.out.println("Book returning performed successfully!!!"); 
         }
+        else 
+        {
+           System.out.println("The book copy has not been checked out by you:(");
+        }
+        rs.close();
+        stmt.close();
      }
 }
