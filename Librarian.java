@@ -51,23 +51,35 @@ public class Librarian extends User {
         System.out.print("Enter The Copy Number: ");
         scanner = new Scanner(System.in);
         int copynum = scanner.nextInt();
-         
-        //check whether the copy is available to be borrowed
+        
+        //check whether the copy exists
         Statement stmt = connection.createStatement();
         String query = "SELECT * FROM borrow WHERE callnum='" + callnum + "' AND copynum="
-                + copynum + " AND return IS NULL";
+                + copynum;
         ResultSet rs = stmt.executeQuery(query);
-        if (rs.next()) {
-            System.out.println("The book copy has not been returned yet:(");
+        if (!rs.next()) {
+            //the copy does not exist
+            System.out.println("The book copy does not exist:(");
         }
-        else 
+        else
         {
-           //borrow the book
-           String today = format.format(new Date());
-           String update = "INSERT INTO borrow VALUES ('" + userid + "','" + callnum +
-                   "'," + copynum + ",to_date('" + today + "','dd/mm/yyyy'),NULL)";
-           stmt.executeUpdate(update);
-           System.out.println("Book borrowing performed successfully!!!"); 
+            //check whether the copy is available to be borrowed
+            stmt = connection.createStatement();
+            query = "SELECT * FROM borrow WHERE callnum='" + callnum + "' AND copynum="
+                    + copynum + " AND return IS NULL";
+            rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                System.out.println("The book copy has not been returned yet:(");
+            }
+            else 
+            {
+               //borrow the book
+               String today = format.format(new Date());
+               String update = "INSERT INTO borrow VALUES ('" + userid + "','" + callnum +
+                       "'," + copynum + ",to_date('" + today + "','dd/mm/yyyy'),NULL)";
+               stmt.executeUpdate(update);
+               System.out.println("Book borrowing performed successfully!!!"); 
+            }
         }
         rs.close();
         stmt.close();
