@@ -145,7 +145,8 @@ public class Administrator extends User {
             statement.setInt(2, Integer.parseInt(attribute[1]));
             statement.setString(3, attribute[2]);
             statement.setDate(4, new Date(format.parse(attribute[3]).getTime()));
-            statement.setDate(5, new Date(format.parse(attribute[4]).getTime()));
+            if (attribute[4].equals("null")) statement.setNull(5, Types.DATE);
+            else statement.setDate(5, new Date(format.parse(attribute[4]).getTime()));
             statement.executeUpdate();
         }
         System.out.println("Done! Data is inputted to the database!");
