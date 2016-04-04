@@ -65,6 +65,7 @@ public class InquirySystem {
         if (choice == 1) return new Administrator(connection);
         if (choice == 2) return new LibraryUser(connection);
         if (choice == 3) return new Librarian(connection);
+        if (choice == 4) return new LibraryDirector(connection);
         return null;
     }
 }
