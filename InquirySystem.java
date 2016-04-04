@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,17 +15,22 @@ public class InquirySystem {
         System.out.println("Welcome to library inquiry system!");
         while (true) {
             System.out.println();
-            int choice = system.mainMenu();
-            if (choice == 5) {
-                return;
-            } else {
-                user = system.getUserType(choice, con);
-                while (true) {
-                    System.out.println();
-                    int action = user.subMenu();
-                    if (action <= 0) break;
-                    else user.runAction(action);
+            try {
+                int choice = system.mainMenu();
+                if (choice == 5) {
+                    return;
+                } else {
+                    user = system.getUserType(choice, con);
+                    if (user == null) continue;
+                    while (true) {
+                        System.out.println();
+                        int action = user.subMenu();
+                        if (action <= 0) break;
+                        else user.runAction(action);
+                    }
                 }
+            } catch (InputMismatchException e) {
+                Error.error("Wrong input format.");
             }
         }
     }

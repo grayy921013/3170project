@@ -20,7 +20,7 @@ public class LibraryUser extends User{
             if (action == 1) searchBook();
             if (action == 2) loanRecord();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Error.error("Tables have not been created.");
          }
     }
     
