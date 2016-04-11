@@ -9,7 +9,9 @@ import java.util.Scanner;
 
 public class LibraryDirector extends User {
     static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-
+    static {
+        format.setLenient(false);
+    }
     public LibraryDirector(Connection connection) {
         super(connection);
     }

@@ -10,6 +10,9 @@ import java.util.Scanner;
  */
 public class Administrator extends User {
     static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    static {
+        format.setLenient(false);
+    }
 
     public Administrator(Connection connection) {
         super(connection);
