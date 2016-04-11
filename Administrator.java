@@ -35,7 +35,7 @@ public class Administrator extends User {
             try {
                 loadData();
             } catch (SQLException e) {
-                Error.newLineError("Tables have not been created.");
+                Error.newLineError("Tables have not been created or some records already exist in the database.");
             } catch (FileNotFoundException e) {
                 Error.newLineError("Corresponding files can not been found.");
             } catch (ParseException e) {
